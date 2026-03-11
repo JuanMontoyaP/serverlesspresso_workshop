@@ -34,3 +34,12 @@ resource "aws_cognito_identity_pool" "identity_pool" {
     provider_name = "cognito-idp.${var.aws_region}.amazonaws.com/${aws_cognito_user_pool.user_pool.id}"
   }
 }
+
+resource "aws_cognito_identity_pool_roles_attachment" "identity_pool_role_mapping" {
+  identity_pool_id = aws_cognito_identity_pool.identity_pool.id
+
+  roles = {
+    authenticated   = aws_iam_role.cognito_authorized_role.arn
+    unauthenticated = aws_iam_role.cognito_unauthorized_role.arn
+  }
+}
